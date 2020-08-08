@@ -1,7 +1,6 @@
 package chapter2MonoidsAndSemigroups
 
 import cats.Monoid
-import cats.instances.int._
 
 object MonoidsAndSemigroups extends App {
   // Exercise 2.3
