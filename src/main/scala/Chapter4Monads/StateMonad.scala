@@ -2,6 +2,7 @@ package Chapter4Monads
 
 import cats.data.State
 import State._
+import cats.implicits.catsSyntaxApplicativeId
 
 object StateMonad extends App {
   val aState = State[Int, String] { state =>
@@ -57,4 +58,61 @@ object StateMonad extends App {
     _ <- modify[Int](_ + 1)
     c <- inspect[Int, Int](_ * 1000)
   } yield (a, b, c)
+
+  // Exercise 4.9.3
+  import cats.data.State
+
+  type CalcState[A] = State[List[Int], A]
+
+  def evalOne(sym: String): CalcState[Int] =
+    sym match {
+      case "+" => operator(_ + _)
+      case "-" => operator(_ - _)
+      case "*" => operator(_ * _)
+      case "/" => operator(_ / _)
+      case num => operand(num.toInt)
+    }
+
+  def operand(num: Int): CalcState[Int] =
+    State[List[Int], Int] { stack =>
+      (num :: stack, num)
+    }
+
+  def operator(func: (Int, Int) => Int): CalcState[Int] =
+    State[List[Int], Int] {
+      case b :: a :: tail =>
+        val ans = func(a, b)
+        (ans :: tail, ans)
+      case _ =>
+        sys.error("Fail!")
+    }
+
+  val v1 = evalOne("42").runA(Nil).value
+  println(v1)
+
+  val programOne = for {
+    _ <- evalOne("1")
+    _ <- evalOne("2")
+    ans <- evalOne("+")
+  } yield ans
+
+  programOne.runA(Nil).value
+
+  def evalAll(input: List[String]): CalcState[Int] =
+    input.foldLeft(0.pure[CalcState]) { (a, b) =>
+      a.flatMap(_ => evalOne(b))
+    }
+
+  val multistageProgram = evalAll(List("1", "2", "+", "3", "*"))
+  val evalAllRes = multistageProgram.runA(Nil).value
+
+  println(evalAllRes)
+
+  val biggerProgram = for {
+    _ <- evalAll(List("1", "2", "+"))
+    _ <- evalAll(List("3", "4", "+"))
+    ans <- evalOne("*")
+  } yield ans
+
+  println(biggerProgram.runA(Nil).value)
 }
