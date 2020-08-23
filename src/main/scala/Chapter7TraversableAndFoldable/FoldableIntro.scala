@@ -1,4 +1,4 @@
-package TraversableAndFoldable
+package Chapter7TraversableAndFoldable
 
 import cats.Foldable
 
