@@ -1,4 +1,4 @@
-package chapter2MonoidsAndSemigroups
+package Chapter2MonoidsAndSemigroups
 
 import cats.Monoid
 

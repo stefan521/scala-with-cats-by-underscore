@@ -1,4 +1,4 @@
-package chapter1Introduction
+package Chapter1Introduction
 
 object Introduction extends App {
 

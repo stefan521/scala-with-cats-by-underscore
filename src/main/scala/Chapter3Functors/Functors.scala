@@ -1,4 +1,4 @@
-package chapter3Functors
+package Chapter3Functors
 
 import cats.Functor
 
