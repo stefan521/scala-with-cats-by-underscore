@@ -14,6 +14,7 @@
         <parameter value="-encoding" />
         <parameter value="utf8" />
         <parameter value="-Xcheckinit" />
+        <parameter value="-Xfatal-warnings" />
         <parameter value="-Xlint:adapted-args" />
         <parameter value="-Xlint:constant" />
         <parameter value="-Xlint:delayedinit-select" />
@@ -41,6 +42,9 @@
         <parameter value="-Wunused:privates" />
         <parameter value="-Wvalue-discard" />
       </parameters>
+      <plugins>
+        <plugin path="$USER_HOME$/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/kind-projector_2.13.1/0.11.0/kind-projector_2.13.1-0.11.0.jar" />
+      </plugins>
     </profile>
   </component>
 </project>
